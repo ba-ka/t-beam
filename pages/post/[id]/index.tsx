@@ -130,13 +130,13 @@ const PostPage: NextPageWithAuthAndLayout = () => {
   }
 
   if (postQuery.data) {
-    const isUserAdmin = session!.user.role === 'ADMIN'
+    const isUserAdmin = postQuery.data.author.id === session!.user.id //session!.user.role === 'ADMIN'
     const postBelongsToUser = postQuery.data.author.id === session!.user.id
 
     return (
       <>
         <Head>
-          <title>{postQuery.data.title} - Beam</title>
+          <title>{postQuery.data.title} - &#91;tanoshii&#93;</title>
         </Head>
 
         <div className="divide-y divide-primary">
