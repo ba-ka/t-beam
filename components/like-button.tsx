@@ -47,7 +47,7 @@ export function LikeButton({
   const { data: session } = useSession()
 
   const isLikedByCurrentUser = Boolean(
-    likedBy.find((item) => item.user.id === session!.user.id)
+    likedBy.find((item) => session && item.user.id === session!.user.id)
   )
   const likeCount = likedBy.length
 
@@ -122,7 +122,9 @@ export function LikeButton({
           {likedBy
             .slice(0, MAX_LIKED_BY_SHOWN)
             .map((item) =>
-              item.user.id === session!.user.id ? 'You' : item.user.name
+              item.user.id === session && session!.user.id
+                ? 'You'
+                : item.user.name
             )
             .join(', ')}
           {likeCount > MAX_LIKED_BY_SHOWN &&

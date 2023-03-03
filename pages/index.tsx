@@ -17,7 +17,7 @@ const PostSummary = dynamic<PostSummaryProps>(
 
 const POSTS_PER_PAGE = 20
 
-const Home: NextPageWithAuthAndLayout = () => {
+const Home = () => {
   const { data: session } = useSession()
   const router = useRouter()
   const currentPageNumber = router.query.page ? Number(router.query.page) : 1

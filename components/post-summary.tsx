@@ -38,7 +38,7 @@ export function PostSummary({
   const { data: session } = useSession()
 
   const isLikedByCurrentUser = Boolean(
-    post.likedBy.find((item) => item.user.id === session!.user.id)
+    post.likedBy.find((item) => session && item.user.id === session!.user.id)
   )
   const likeCount = post.likedBy.length
 
@@ -46,7 +46,7 @@ export function PostSummary({
     <div>
       {post.hidden && (
         <Banner className="mb-6">
-          This post has been hidden and is only visible to administrators.
+          This post has been hidden and is only visible to you.
         </Banner>
       )}
       <div className={classNames(post.hidden ? 'opacity-50' : '')}>
@@ -115,7 +115,9 @@ export function PostSummary({
                   {post.likedBy
                     .slice(0, MAX_LIKED_BY_SHOWN)
                     .map((item) =>
-                      item.user.id === session!.user.id ? 'You' : item.user.name
+                      item.user.id === session && session!.user.id
+                        ? 'You'
+                        : item.user.name
                     )
                     .join(', ')}
                   {likeCount > MAX_LIKED_BY_SHOWN &&
