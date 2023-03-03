@@ -122,7 +122,7 @@ export function LikeButton({
           {likedBy
             .slice(0, MAX_LIKED_BY_SHOWN)
             .map((item) =>
-              item.user.id === session && session!.user.id
+              session && item.user.id === session!.user.id
                 ? 'You'
                 : item.user.name
             )

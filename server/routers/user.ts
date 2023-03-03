@@ -35,6 +35,7 @@ export const userRouter = createProtectedRouter()
       title: z.string().nullish(),
     }),
     async resolve({ ctx, input }) {
+      if (!ctx.session) throw new TRPCError({ code: 'FORBIDDEN' })
       const user = await ctx.prisma.user.update({
         where: { id: ctx.session.user.id },
         data: {
@@ -51,6 +52,7 @@ export const userRouter = createProtectedRouter()
       image: z.string().nullish(),
     }),
     async resolve({ ctx, input }) {
+      if (!ctx.session) throw new TRPCError({ code: 'FORBIDDEN' })
       const user = await ctx.prisma.user.update({
         where: { id: ctx.session.user.id },
         data: {

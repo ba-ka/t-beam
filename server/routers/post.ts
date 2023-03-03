@@ -175,6 +175,8 @@ export const postRouter = createProtectedRouter()
       content: z.string().min(1),
     }),
     async resolve({ ctx, input }) {
+      if (!ctx.session) throw new TRPCError({ code: 'FORBIDDEN' })
+
       const post = await ctx.prisma.post.create({
         data: {
           title: input.title,
@@ -202,6 +204,7 @@ export const postRouter = createProtectedRouter()
       }),
     }),
     async resolve({ ctx, input }) {
+      if (!ctx.session) throw new TRPCError({ code: 'FORBIDDEN' })
       const { id, data } = input
 
       const post = await ctx.prisma.post.findUnique({
@@ -236,6 +239,7 @@ export const postRouter = createProtectedRouter()
   .mutation('delete', {
     input: z.number(),
     async resolve({ input: id, ctx }) {
+      if (!ctx.session) throw new TRPCError({ code: 'FORBIDDEN' })
       const post = await ctx.prisma.post.findUnique({
         where: { id },
         select: {
@@ -260,6 +264,7 @@ export const postRouter = createProtectedRouter()
   .mutation('like', {
     input: z.number(),
     async resolve({ input: id, ctx }) {
+      if (!ctx.session) throw new TRPCError({ code: 'FORBIDDEN' })
       await ctx.prisma.likedPosts.create({
         data: {
           post: {
@@ -281,6 +286,7 @@ export const postRouter = createProtectedRouter()
   .mutation('unlike', {
     input: z.number(),
     async resolve({ input: id, ctx }) {
+      if (!ctx.session) throw new TRPCError({ code: 'FORBIDDEN' })
       await ctx.prisma.likedPosts.delete({
         where: {
           postId_userId: {
@@ -296,6 +302,7 @@ export const postRouter = createProtectedRouter()
   .mutation('hide', {
     input: z.number(),
     async resolve({ input: id, ctx }) {
+      if (!ctx.session) throw new TRPCError({ code: 'FORBIDDEN' })
       // if (!ctx.isUserAdmin) {
       //   throw new TRPCError({ code: 'FORBIDDEN' })
       // }
@@ -333,6 +340,7 @@ export const postRouter = createProtectedRouter()
   .mutation('unhide', {
     input: z.number(),
     async resolve({ input: id, ctx }) {
+      if (!ctx.session) throw new TRPCError({ code: 'FORBIDDEN' })
       // if (!ctx.isUserAdmin) {
       //   throw new TRPCError({ code: 'FORBIDDEN' })
       // }

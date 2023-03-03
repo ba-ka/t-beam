@@ -10,6 +10,8 @@ export const commentRouter = createProtectedRouter()
       content: z.string().min(1),
     }),
     async resolve({ ctx, input }) {
+      if (!ctx.session) throw new TRPCError({ code: 'FORBIDDEN' })
+
       const comment = await ctx.prisma.comment.create({
         data: {
           content: input.content,
@@ -39,6 +41,7 @@ export const commentRouter = createProtectedRouter()
     }),
     async resolve({ ctx, input }) {
       const { id, data } = input
+      if (!ctx.session) throw new TRPCError({ code: 'FORBIDDEN' })
 
       const comment = await ctx.prisma.comment.findUnique({
         where: { id },
@@ -71,6 +74,7 @@ export const commentRouter = createProtectedRouter()
   .mutation('delete', {
     input: z.number(),
     async resolve({ input: id, ctx }) {
+      if (!ctx.session) throw new TRPCError({ code: 'FORBIDDEN' })
       const comment = await ctx.prisma.comment.findUnique({
         where: { id },
         select: {
