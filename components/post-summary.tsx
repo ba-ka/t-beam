@@ -38,7 +38,7 @@ export function PostSummary({
   const { data: session } = useSession()
 
   const isLikedByCurrentUser = Boolean(
-    post.likedBy.find((item) => item.user.id === session!.user.id)
+    post.likedBy.find((item) => session && item.user.id === session!.user.id)
   )
   const likeCount = post.likedBy.length
 
@@ -115,7 +115,9 @@ export function PostSummary({
                   {post.likedBy
                     .slice(0, MAX_LIKED_BY_SHOWN)
                     .map((item) =>
-                      item.user.id === session!.user.id ? 'You' : item.user.name
+                      item.user.id === session && session!.user.id
+                        ? 'You'
+                        : item.user.name
                     )
                     .join(', ')}
                   {likeCount > MAX_LIKED_BY_SHOWN &&

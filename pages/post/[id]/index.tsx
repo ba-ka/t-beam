@@ -130,7 +130,7 @@ const PostPage: NextPageWithAuthAndLayout = () => {
   }
 
   if (postQuery.data) {
-    const isUserAdmin = postQuery.data.author.id === session!.user.id //session!.user.role === 'ADMIN'
+    const isUserAdmin = session && postQuery.data.author.id === session!.user.id //session!.user.role === 'ADMIN'
     const postBelongsToUser = isUserAdmin
 
     return (
@@ -270,19 +270,21 @@ const PostPage: NextPageWithAuthAndLayout = () => {
                 ))}
               </ul>
             )}
-            <div className="flex items-start gap-2 sm:gap-4">
-              <span className="hidden sm:inline-block">
-                <Avatar name={session!.user.name} src={session!.user.image} />
-              </span>
-              <span className="inline-block sm:hidden">
-                <Avatar
-                  name={session!.user.name}
-                  src={session!.user.image}
-                  size="sm"
-                />
-              </span>
-              <AddCommentForm postId={postQuery.data.id} />
-            </div>
+            {session && (
+              <div className="flex items-start gap-2 sm:gap-4">
+                <span className="hidden sm:inline-block">
+                  <Avatar name={session!.user.name} src={session!.user.image} />
+                </span>
+                <span className="inline-block sm:hidden">
+                  <Avatar
+                    name={session!.user.name}
+                    src={session!.user.image}
+                    size="sm"
+                  />
+                </span>
+                <AddCommentForm postId={postQuery.data.id} />
+              </div>
+            )}
           </div>
         </div>
 

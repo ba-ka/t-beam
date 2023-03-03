@@ -3,11 +3,12 @@ import { Context } from './context'
 
 export function createProtectedRouter() {
   return trpc.router<Context>().middleware(({ ctx, next }) => {
-    if (!ctx.session) {
-      throw new trpc.TRPCError({ code: 'UNAUTHORIZED' })
-    }
+    // if (!ctx.session) {
+    //   throw new trpc.TRPCError({ code: 'UNAUTHORIZED' })
+    // }
 
-    const isUserAdmin = ctx.session.user.role === 'ADMIN'
+    //const isUserAdmin = ctx.session.user.role === 'ADMIN'
+    const isUserAdmin = false
 
     return next({
       ctx: {

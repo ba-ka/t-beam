@@ -17,7 +17,6 @@ import { TextField } from '@/components/text-field'
 import { browserEnv } from '@/env/browser'
 import { uploadImage } from '@/lib/cloudinary'
 import { InferQueryPathAndInput, trpc } from '@/lib/trpc'
-import type { NextPageWithAuthAndLayout } from '@/lib/types'
 import { useSession } from 'next-auth/react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
@@ -45,7 +44,7 @@ function getProfileQueryPathAndInput(
   ]
 }
 
-const ProfilePage: NextPageWithAuthAndLayout = () => {
+const ProfilePage = () => {
   return (
     <>
       <ProfileInfo />
@@ -74,7 +73,9 @@ function ProfileInfo() {
     React.useState(false)
 
   if (profileQuery.data) {
-    const profileBelongsToUser = profileQuery.data.id === session!.user.id
+    const profileBelongsToUser = session
+      ? profileQuery.data.id === session!.user.id
+      : false
 
     return (
       <>
@@ -201,7 +202,7 @@ function ProfileFeed() {
 
       const previousQuery = utils.getQueryData(profileFeedQueryPathAndInput)
 
-      if (previousQuery) {
+      if (previousQuery && session) {
         utils.setQueryData(profileFeedQueryPathAndInput, {
           ...previousQuery,
           posts: previousQuery.posts.map((post) =>
@@ -234,7 +235,7 @@ function ProfileFeed() {
 
       const previousQuery = utils.getQueryData(profileFeedQueryPathAndInput)
 
-      if (previousQuery) {
+      if (previousQuery && session) {
         utils.setQueryData(profileFeedQueryPathAndInput, {
           ...previousQuery,
           posts: previousQuery.posts.map((post) =>

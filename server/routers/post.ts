@@ -19,7 +19,9 @@ export const postRouter = createProtectedRouter()
       const skip = input?.skip
       const where = {
         hidden:
-          input?.profileFeed && input?.authorId === ctx.session.user.id
+          input?.profileFeed &&
+          ctx.session &&
+          input?.authorId === ctx.session.user.id
             ? undefined
             : false,
         authorId: input?.authorId,
@@ -132,7 +134,8 @@ export const postRouter = createProtectedRouter()
         },
       })
 
-      const postBelongsToUser = post?.author.id === ctx.session.user.id
+      const postBelongsToUser =
+        ctx.session && post?.author.id === ctx.session.user.id
 
       if (!post || (post.hidden && !postBelongsToUser)) {
         // || (post.hidden && !postBelongsToUser && !ctx.isUserAdmin)
