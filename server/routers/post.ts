@@ -11,13 +11,17 @@ export const postRouter = createProtectedRouter()
         take: z.number().min(1).max(50).optional(),
         skip: z.number().min(1).optional(),
         authorId: z.string().optional(),
+        profileFeed: z.boolean().optional(),
       })
       .optional(),
     async resolve({ input, ctx }) {
       const take = input?.take ?? 50
       const skip = input?.skip
       const where = {
-        hidden: false, // ctx.isUserAdmin ? undefined : false
+        hidden:
+          input?.profileFeed && input?.authorId === ctx.session.user.id
+            ? undefined
+            : false,
         authorId: input?.authorId,
       }
 
@@ -128,9 +132,9 @@ export const postRouter = createProtectedRouter()
         },
       })
 
-      //const postBelongsToUser = post?.author.id === ctx.session.user.id
+      const postBelongsToUser = post?.author.id === ctx.session.user.id
 
-      if (!post) {
+      if (!post || (post.hidden && !postBelongsToUser)) {
         // || (post.hidden && !postBelongsToUser && !ctx.isUserAdmin)
         throw new TRPCError({
           code: 'NOT_FOUND',

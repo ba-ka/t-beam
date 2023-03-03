@@ -46,7 +46,7 @@ export function PostSummary({
     <div>
       {post.hidden && (
         <Banner className="mb-6">
-          This post has been hidden and is only visible to administrators.
+          This post has been hidden and is only visible to you.
         </Banner>
       )}
       <div className={classNames(post.hidden ? 'opacity-50' : '')}>

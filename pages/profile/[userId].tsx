@@ -191,6 +191,7 @@ function ProfileFeed() {
     {
       ...getQueryPaginationInput(POSTS_PER_PAGE, currentPageNumber),
       authorId: String(router.query.userId),
+      profileFeed: true,
     },
   ]
   const profileFeedQuery = trpc.useQuery(profileFeedQueryPathAndInput)
