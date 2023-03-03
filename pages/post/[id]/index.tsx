@@ -131,7 +131,7 @@ const PostPage: NextPageWithAuthAndLayout = () => {
 
   if (postQuery.data) {
     const isUserAdmin = postQuery.data.author.id === session!.user.id //session!.user.role === 'ADMIN'
-    const postBelongsToUser = postQuery.data.author.id === session!.user.id
+    const postBelongsToUser = isUserAdmin
 
     return (
       <>
@@ -143,7 +143,7 @@ const PostPage: NextPageWithAuthAndLayout = () => {
           <div className="pb-12">
             {postQuery.data.hidden && (
               <Banner className="mb-6">
-                This post has been hidden and is only visible to administrators.
+                This post has been hidden and is only visible to you.
               </Banner>
             )}
 

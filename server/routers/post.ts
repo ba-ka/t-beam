@@ -130,8 +130,8 @@ export const postRouter = createProtectedRouter()
 
       //const postBelongsToUser = post?.author.id === ctx.session.user.id
 
-      if (!post || post.hidden) {
-        // && !postBelongsToUser && !ctx.isUserAdmin
+      if (!post) {
+        // || (post.hidden && !postBelongsToUser && !ctx.isUserAdmin)
         throw new TRPCError({
           code: 'NOT_FOUND',
           message: `No post with id '${id}'`,
